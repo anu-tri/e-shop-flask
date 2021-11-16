@@ -1,0 +1,98 @@
+{% extends 'base.html.j2' %}
+{% block title %}
+Antiques Shop
+{% endblock %}
+
+{% block content %}
+<div class="row" style="margin-top:20px; margin-left:20px">
+   <div class="col-8">
+       <h2 class="text-dark">The Antiques Shop</h2>
+       <p class="text-dark">Get all antiques and collections at this shop.</p>
+       <div class="create_button text-dark">
+         {% if current_user.is_admin %}
+            <form method="POST" action="{{url_for('main.create_item', category_id=items[0].category_id)}}">
+               {% if category_id == 1 %}
+                  <button class="btn btn-outline btn-primary" type="submit">+ Add Movie Posters</button>
+               {% elif category_id == 2 %}
+                  <button class="btn btn-outline btn-primary" type="submit">+ Add Magazines</button>
+               {% elif category_id == 3 %}
+                  <button class="btn btn-outline btn-primary" type="submit">+ Add Games</button>
+               {% elif category_id == 4 %}
+                  <button class="btn btn-outline btn-primary" type="submit">+ Add Coffee Collectibles</button>
+               {% elif category_id == 5 %}
+                  <button class="btn btn-outline btn-primary" type="submit">+ Add Antiques</button>
+               {% endif %}
+            </form>
+         {% endif %}
+       </div>
+       <br>
+       <p class="text-info" style="font-size:15px">Click on any image to view complete details.</p>
+      <table class="table table-hover table-light table-striped">
+         <thead class="thead-dark">
+            <tr>
+               <th scope="col">Image</th>
+               <th scope="col">Name</th>
+               <th scope="col">Price</th>
+               <th scope="col"></th>
+               <th scope="col">Actions</th>
+               <th scope="col" class="text-dark">Delete</th>
+               <th scope="col" class="text-dark">Add to Cart</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for item in items %}
+            <tr>
+               <td><a href="{{url_for('main.view_item', id=item.id)}}"><img src={{item['img']}} alt="Loading.." border="3" height="110" width="100"></img></a></td>
+               <td>{{ item.name }}</td>
+               <td>{{ item.price }}$</td>
+               <td></td>
+
+               {% if current_user.is_admin %}
+               <td>
+                  <form method="GET" action="{{url_for('main.edit_item', id=item.id)}}">
+                  <button class="btn btn-outline btn-link" type="submit">Edit</button>
+                  </form>
+               </td>
+               <td>
+                  <form method="POST" action="{{url_for('main.delete_item', id=item.id)}}">
+                  <button class="btn btn-outline btn-link" type="submit">Delete</button>
+                  </form>
+               </td>
+               {% endif %}
+               <td>
+                  <form method="POST" action="{{url_for('main.add_item', id=item.id)}}">
+                  <button class="btn btn-outline btn-link" type="submit">Add To Cart</button>
+                  </form>
+               </td>
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+
+   <div class="col-md-4">
+        <h2>Cart Summary</h2>
+        <br>
+
+        {# Calculating Cart Total #}
+        {% set totals = [] %}
+
+        {% for item in current_user.cart %}
+            <div class="row">
+               <img src={{item['img']}} alt="Loading.." border="3" height=70 width=60></img> &nbsp;&nbsp;
+               <b>{{item.name}}</b> &nbsp;&nbsp;&nbsp;${{item.price}}&nbsp;&nbsp;&nbsp;
+               {# <b>{{format (totals | count) }}&nbsp;&nbsp;&nbsp; #}
+               <a href="{{url_for('main.remove_cart_item', id=item.id)}}" >Remove</a>
+            </div>
+            <br>
+         {% if totals.append(item.price) %}{% endif %}
+        {% endfor %}
+        <div style="margin-left:-18px">
+        <a href="{{url_for('main.remove_all_cart_items')}}" class="text-danger">Empty Cart</a>
+        <p></p>
+        <h5 class="text-primary">Cart Total: ${{ '%0.2f' | format(totals | sum) }}</h5>
+         </div>
+   </div> 
+</div>
+<br><br><br><br><br><br>
+{% endblock %}

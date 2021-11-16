@@ -1,0 +1,39 @@
+{% extends 'base.html.j2' %}
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+<body class="text-center">
+    <div class="container col-md-6">
+        <form method="POST" class="form-signin" style="color:white">
+            {{ form.hidden_tag() }}<br><br>
+            <h2 class="text-warning">The Antiques Shop</h2>
+            <p class="text-dark">Get all antiques and collections at this shop.</p>
+            <img class="mb-4" src="https://res.cloudinary.com/dzzbwxwsv/image/upload/c_scale,h_200,w_350/v1636793686/antiques-logo_fyz0f9.jpg" width="200" height="120">
+            
+            <h1 class="text-dark">
+                Login
+            </h1>
+            {{ form.email.label() }}<br>
+             {{ form.email(class="form-control" , placeholder="Email") }}
+
+            {% for error in form.email.errors %}
+                <small style="color:red;">{{ error }}</small>
+            {% endfor %}
+
+            {{ form.password.label() }}
+            {{ form.password(class="form-control" ,placeholder="Password") }}
+
+            <br>
+
+            {{ form.submit(class="btn btn-lg btn-warning form-control", value="Login" )}}
+            <div class="text-dark">Do not have an account? <a href="{{ url_for('auth.register') }}">Register here</a></div>
+            <br><br><br>
+        </form>
+        
+        <small style="color:red">{{error}}</small><br>
+        
+    </div>
+</body>
+{% endblock %}

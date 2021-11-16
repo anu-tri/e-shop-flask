@@ -1,0 +1,28 @@
+{% extends 'base.html.j2' %}
+{% block title %}
+Single antique item
+{% endblock %}
+{% block content %}
+
+<div class="row-md-8" style="float:left">
+    <img class="mb-4" src="https://res.cloudinary.com/dzzbwxwsv/image/upload/c_scale,h_200,w_350/v1636793686/antiques-logo_fyz0f9.jpg" style="margin-top:100px" width="200" height="120">
+    <p><a href="{{url_for('main.index')}}">Back to Antiques</a></p>
+</div>
+
+<div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100" style="float:left">
+                <img class="card-img-top" src={{item['img']}} alt="" width="100%" height="340vh" object-fit="cover"></a>
+                
+                <div class="card-body">
+                    <h5 class="card-title text-primary">{{item.name}}</a></h5>
+                    <h6>${{item.price}}</h6>
+                    <p class="card-text" style="font-size:15px">{{item.description}}</p> 
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+{% endblock %}
